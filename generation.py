@@ -1,10 +1,9 @@
 import os
 import json
-import csv
-from datetime import datetime
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
+from rag_store import query_knowledge_base, initialize_vector_db
 
 # 1. Setup & Initialization
 load_dotenv()
@@ -47,10 +46,19 @@ def classify_ticket(message: str) -> dict:
     return json.loads(response.text)
 
 # 3. Email response generator
-def generate_email_draft(customer_message: str, summary: str) -> str:
+def generate_email_draft(customer_message: str, summary: str) -> tuple[str, str]:
+
+    retrieved_context = query_knowledge_base
+    
     prompt = f"""
     You are a polite, helpful customer support representative.
     Write a clear, professional email reply addressing the customer's issue.
+    
+    STRICT REQUIREMENT: Ground your reply strictly in the provided Official Company Policy context.
+    Do NOT invent rules or policies outside of what is stated in the context.
+
+    Official Company Policy Context:
+    {retrieved_context}
 
     Customer Issue Summary: {summary}
     Original Message: "{customer_message}"
@@ -62,10 +70,12 @@ def generate_email_draft(customer_message: str, summary: str) -> str:
         contents=prompt,
         config=types.GenerateContentConfig(temperature=0.3)
     )
-    return response.text
+    return response.text, retrieved_context
 
 
 if __name__ == "__main__":
+
+    # for testing the generator functions
     sample_data = [
         "Hi, I forgot my password and the reset link is not working.",
         "URGENT: Our site checkout page is returning 500 server errors!",
