@@ -1,7 +1,7 @@
-# 🤖 RAG-Grounded AI Customer Support Triage Agent
+# RAG-Grounded AI Customer Support Triage Agent
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
-![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash--Lite-8E75B2?logo=googlegemini&logoColor=white)
+![Gemini](https://img.shields.io/badge/Google%20Gemini-3.5%20Flash--Lite-8E75B2?logo=googlegemini&logoColor=white)
 ![ChromaDB](https://img.shields.io/badge/Vector%20DB-ChromaDB-orange)
 ![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
 
@@ -11,14 +11,14 @@ This application ingests unstructured customer inquiries, deterministically clas
 
 ---
 
-## 🎯 Problem & Solution
+## Problem & Solution
 
 * **The Problem:** Support teams spend hours manually sorting incoming tickets, identifying critical production outages, filtering spam, and looking up company policies to write repetitive replies. Furthermore, standard LLM wrappers often hallucinate company rules (like refund windows or escalation steps) when generating drafts.
 * **The Solution:** A modular AI pipeline that enforces strict JSON schema classification for instant routing and uses **Retrieval-Augmented Generation (RAG)** to ground every drafted email strictly in verified internal company documentation.
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```text
 [ Customer Ticket Input (Streamlit UI) ]
