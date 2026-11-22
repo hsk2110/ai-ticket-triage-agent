@@ -38,7 +38,7 @@ Query ChromaDB (RAG)      Escalate Alert     Log & Filter
       │
       ▼
 Generate Grounded Draft
-(`generator.py`)
+(`generation.py`)
 ```
 
 ---

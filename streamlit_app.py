@@ -1,10 +1,18 @@
 import streamlit as st
 from generation import classify_ticket, generate_email_draft
+from rag_store import initialize_vector_db
+from os import getenv
 
 st.set_page_config(page_title="RAG AI Ticket Triage", layout="wide")
 
+@st.cache_resource
+def setup_knowledge_base():
+    initialize_vector_db()
+
+setup_knowledge_base()
+
 st.title("RAG-Grounded AI Ticket Triage Dashboard")
-st.caption("Powered by Google Gemini Flash-Lite & ChromaDB Local Vector Search")
+st.caption(f"Powered by Google Gemini ({getenv('GEMINI_MODEL', 'gemini-3.5-flash-lite')}) & ChromaDB Local Vector Search")
 
 sample_tickets = {
     "Custom Input": "",
@@ -38,8 +46,10 @@ if st.button("Process Ticket with RAG", type="primary"):
 
             with col2:
                 st.subheader("⚡ Grounded Response & RAG Context")
-                
-                if category in ["SUPPORT", "FEATURE_REQUEST"]:
+
+                if result.get("recommended_action") == "alert_team" and category == "SUPPORT":
+                    st.warning("Automatic classification failed. This ticket needs manual review.")                
+                elif category in ["SUPPORT", "FEATURE_REQUEST"]:
                     draft, context = generate_email_draft(customer_input, result.get("summary", ""))
                     
                     st.success("Draft Response Generated")
@@ -47,7 +57,6 @@ if st.button("Process Ticket with RAG", type="primary"):
                     
                     with st.expander("View Retrieved ChromaDB Context (RAG Evidence)"):
                         st.code(context, language="markdown")
-
                 elif category == "URGENT":
                     st.error("ESCALATION REQUIRED: Production issue flagged.")
                 elif category == "SPAM":
