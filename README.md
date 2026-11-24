@@ -9,7 +9,7 @@ An end-to-end automated customer support triage and response pipeline built with
 
 This application ingests unstructured customer inquiries, classifies intent and priority into structured JSON, retrieves exact company policy excerpts from a local vector database (RAG), and drafts grounded email responses via an interactive dashboard.
 
-[Demo](docs/demo.gif)
+<img width="900" height="509" alt="demo" src="https://github.com/user-attachments/assets/ab51c306-ddd8-4974-a1cc-e648e46cb584" />
 
 ---
 
