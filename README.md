@@ -7,7 +7,7 @@
 
 An end-to-end automated customer support triage and response pipeline built with **Python**, **Google Gemini**, **ChromaDB**, and **Streamlit**. 
 
-This application ingests unstructured customer inquiries, deterministically classifies intent and priority into structured JSON, retrieves exact company policy excerpts from a local vector database (RAG), and drafts grounded, hallucination-free email responses via an interactive dashboard.
+This application ingests unstructured customer inquiries, classifies intent and priority into structured JSON, retrieves exact company policy excerpts from a local vector database (RAG), and drafts grounded email responses via an interactive dashboard.
 
 ---
 
@@ -24,17 +24,17 @@ This application ingests unstructured customer inquiries, deterministically clas
 [ Customer Ticket Input (Streamlit UI) ]
                   │
                   ▼
-┌───────────────────────────────────┐
-│   Gemini Classifier (JSON Mode)   │  ──▶ Category, Priority, Summary
-└─────────────────┬─────────────────┘
+┌─────────────────────────────────────┐
+│   Gemini Classifier (Schema Mode)   │  ──▶ Category, Priority, Summary
+└─────────────────┬───────────────────┘
                   │
       ┌───────────┴──────────────┬─────────────────┐
       ▼                          ▼                 ▼
 [ Support / Feature ]        [ Urgent ]         [ Spam ]
       │                          │                 │
       ▼                          ▼                 ▼
-Query ChromaDB (RAG)      Escalate Alert     Log & Filter
-(`rag_store.py`)
+Query ChromaDB (RAG)     Flag for escalation   Mark as spam
+(`rag_store.py`)         (UI alert only)       (no draft)
       │
       ▼
 Generate Grounded Draft
@@ -57,6 +57,11 @@ ai-ticket-triage-agent/
 ```
 
 ---
+
+## Limitations & Future Work
+- Urgent tickets are only flagged in the dashboard; a real deployment would send a Slack/PagerDuty alert.
+- Spam is not persisted; logging filtered tickets for auditing is planned.
+- Classification accuracy has not yet been measured on a labelled test set.
 
 ## How to Run the Project Locally
 
