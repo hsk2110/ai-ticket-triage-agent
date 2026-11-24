@@ -49,7 +49,7 @@ Generate Grounded Draft
 ai-ticket-triage-agent/
 ├── company_faq.md       # Knowledge base containing official support policies
 ├── rag_store.py         # ChromaDB vector indexing & semantic retrieval logic
-├── generator.py         # Gemini API classification & RAG-grounded draft generation
+├── generation.py         # Gemini API classification & RAG-grounded draft generation
 ├── streamlit_app.py     # Interactive local web dashboard
 ├── requirements.txt     # Project dependencies
 ├── .gitignore           # Excludes .env, output/, and local chroma_db/ cache
